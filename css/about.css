@@ -1,0 +1,163 @@
+/* About Grid Layout */
+.about-grid {
+    padding: 3rem 0;
+  }
+  
+  .about-grid article {
+    padding-right: 1rem;
+  }
+  
+  .about-grid aside {
+    padding-left: 1rem;
+  }
+  
+  .about-grid h2,
+  .about-grid h3 {
+    color: var(--brand);
+    margin-bottom: 1rem;
+  }
+  
+  .about-grid h3 {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .about-grid p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  /* Checklist Styles */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  
+  .checklist li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--ink);
+  }
+  
+  .checklist li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--ok);
+    font-weight: bold;
+  }
+  
+  /* Mission & Values Section */
+  .mission-values {
+    background: var(--surface);
+    padding: 4rem 0;
+    margin: 2rem 0;
+  }
+  
+  .mission-values h2 {
+    text-align: center;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .value-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s;
+  }
+  
+  .value-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(45, 80, 22, 0.15);
+  }
+  
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  .value-card h3 {
+    color: var(--brand);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  .value-card p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  /* About content lists */
+  .about-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  
+  .about-grid ul li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--ink);
+  }
+  
+  .about-grid ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--brand);
+    font-weight: bold;
+  }
+  
+  /* Responsive Design for About Page */
+  @media (max-width: 900px) {
+    .values-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .about-grid article,
+    .about-grid aside {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .value-card {
+      padding: 1.5rem 1rem;
+    }
+    
+    .value-icon {
+      font-size: 2rem;
+    }
+    
+    .mission-values {
+      padding: 3rem 0;
+      margin: 1.5rem 0;
+    }
+    
+    .about-grid {
+      padding: 2rem 0;
+    }
+  }
