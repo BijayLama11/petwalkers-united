@@ -57,27 +57,29 @@ $conn->close();
                 <h3>Add New User</h3>
                 <div class="field">
                     <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required>
+                    <input type="text" id="firstName" name="firstName" required minlength="2" maxlength="50">
                 </div>
                 <div class="field">
                     <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required>
+                    <input type="text" id="lastName" name="lastName" required minlength="2" maxlength="50">
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required maxlength="100">
                 </div>
                 <div class="field">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" required maxlength="20" placeholder="e.g., 0123456789">
                 </div>
                 <div class="field">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required minlength="6" maxlength="255">
+                    <small style="color: #666; font-size: 0.9em;">Minimum 6 characters</small>
                 </div>
                 <div class="field">
                     <label for="role">Role</label>
                     <select id="role" name="role" required>
+                        <option value="">Select a role</option>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>

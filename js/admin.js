@@ -13,10 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
       statusMessage.textContent = message;
       statusMessage.className = `status ${type}`;
       statusMessage.style.display = 'block';
-      setTimeout(() => {
-        statusMessage.className = "status";
-        statusMessage.style.display = 'none';
-      }, 5000);
+      
+      // Don't auto-hide info messages as quickly
+      const hideDelay = type === 'info' ? 2000 : 5000;
+      
+      if (type !== 'info') {
+        setTimeout(() => {
+          statusMessage.className = "status";
+          statusMessage.style.display = 'none';
+        }, hideDelay);
+      }
     }
   }
 
@@ -75,23 +81,57 @@ document.addEventListener("DOMContentLoaded", function () {
   if (addUserForm) {
     addUserForm.addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // Get form data
       const formData = new FormData(addUserForm);
+      
+      // Basic client-side validation
+      const firstName = formData.get('firstName').trim();
+      const lastName = formData.get('lastName').trim();
+      const email = formData.get('email').trim();
+      const phone = formData.get('phone').trim();
+      const password = formData.get('password');
+      const role = formData.get('role');
+      
+      if (!firstName || !lastName || !email || !phone || !password || !role) {
+        showStatus('error', 'All fields are required.');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showStatus('error', 'Password must be at least 6 characters long.');
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showStatus('error', 'Please enter a valid email address.');
+        return;
+      }
+      
+      // Show loading message
+      showStatus('info', 'Adding user...');
       
       try {
         const response = await fetch('add_user.php', {
           method: 'POST',
           body: formData
         });
+        
         const result = await response.json();
-        if (result.success) {
+        console.log('Add user response:', result); // Debug log
+        
+        if (response.ok && result.success) {
           showStatus('success', result.message);
           addUserForm.reset();
           setTimeout(() => location.reload(), 1500);
         } else {
-          showStatus('error', result.message);
+          showStatus('error', result.message || 'Failed to add user');
         }
       } catch (err) {
-        showStatus('error', 'An error occurred while adding user.');
+        console.error('Add user error:', err);
+        showStatus('error', 'Network error occurred while adding user.');
       }
     });
   }
