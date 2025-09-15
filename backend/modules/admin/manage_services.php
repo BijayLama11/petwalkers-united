@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
 
 require_once '../../config/db_config.php';
 
-$sql = "SELECT id, service_name, description, price FROM services ORDER BY id ASC";
+$sql = "SELECT id, service_name, subtitle, description, price FROM services ORDER BY id ASC";
 $result = $conn->query($sql);
 $services = [];
 if ($result && $result->num_rows > 0) {
@@ -63,15 +63,16 @@ if ($result && $result->num_rows > 0) {
                 </div>
                 <div class="field">
                     <label for="subtitle">Subtitle</label>
-                    <input type="text" id="subtitle" name="subtitle" required>
+                    <input type="text" id="subtitle" name="subtitle" required placeholder="Brief description of the service">
                 </div>
                 <div class="field">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" required></textarea>
+                    <textarea id="description" name="description" required placeholder="Detailed description with features (each line will be a bullet point)"></textarea>
+                    <small style="color: #666;">Each line will appear as a bullet point in the service card</small>
                 </div>
                 <div class="field">
                     <label for="price">Price (AUD)</label>
-                    <input type="number" step="0.01" id="price" name="price" required>
+                    <input type="number" step="0.01" id="price" name="price" required min="0">
                 </div>
                 <button type="submit" class="btn btn-primary">Add Service</button>
             </form>
@@ -92,9 +93,19 @@ if ($result && $result->num_rows > 0) {
                         <?php foreach ($services as $service): ?>
                             <tr data-id="<?php echo $service['id']; ?>">
                                 <td><?php echo htmlspecialchars($service['service_name']); ?></td>
-                                <td><?php echo htmlspecialchars($service['subtitle']); ?></td>
-                                <td><?php echo htmlspecialchars($service['description']); ?></td>
-                                <td>AUD <?php echo htmlspecialchars(number_format($service['price'], 2)); ?></td>
+                                <td><?php echo htmlspecialchars($service['subtitle'] ?? ''); ?></td>
+                                <td style="max-width: 300px; word-wrap: break-word;">
+                                    <?php 
+                                    $description = $service['description'] ?? '';
+                                    // If description is long, truncate it for table display
+                                    if (strlen($description) > 100) {
+                                        echo htmlspecialchars(substr($description, 0, 100)) . '...';
+                                    } else {
+                                        echo htmlspecialchars($description);
+                                    }
+                                    ?>
+                                </td>
+                                <td>$<?php echo number_format($service['price'] ?? 0, 2); ?></td>
                                 <td>
                                     <button class="btn btn-danger delete-btn"
                                         data-id="<?php echo $service['id']; ?>">Delete</button>

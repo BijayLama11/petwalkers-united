@@ -1,3 +1,21 @@
+<?php
+// Fetch services from database for the dropdown
+require_once 'backend/config/db_config.php';
+
+$sql = "SELECT service_name FROM services ORDER BY service_name ASC";
+$result = $conn->query($sql);
+$services = [];
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $services[] = $row['service_name'];
+    }
+}
+
+// Close connection after fetching services
+$conn->close();
+?>
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -122,9 +140,18 @@
             <label for="subject">Service <span class="required">*</span></label>
             <select id="subject" name="subject" required>
               <option value="" disabled selected>Select one</option>
-              <option value="Quick Stretch">Quick Stretch</option>
-              <option value="Standard Walk">Standard Walk</option>
-              <option value="Drop-in Sit">Drop-in Sit</option>
+              <?php if (count($services) > 0): ?>
+                <?php foreach ($services as $service): ?>
+                  <option value="<?php echo htmlspecialchars($service); ?>">
+                    <?php echo htmlspecialchars($service); ?>
+                  </option>
+                <?php endforeach; ?>
+              <?php else: ?>
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Quick Stretch">Quick Stretch</option>
+                <option value="Standard Walk">Standard Walk</option>
+                <option value="Drop-in Sit">Drop-in Sit</option>
+              <?php endif; ?>
             </select>
             <span class="error" id="err-subject" role="alert" aria-live="polite"></span>
           </div>
