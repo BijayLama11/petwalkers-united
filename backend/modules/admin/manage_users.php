@@ -107,8 +107,12 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($user['phone']); ?></td>
                                 <td><?php echo htmlspecialchars($user['role']); ?></td>
                                 <td>
-                                    <button class="btn btn-danger delete-user-btn"
-                                        data-id="<?php echo $user['id']; ?>">Delete</button>
+                                    <?php if ($user['id'] != $_SESSION['id']): ?>
+                                        <button class="btn btn-danger delete-user-btn"
+                                            data-id="<?php echo $user['id']; ?>">Delete</button>
+                                    <?php else: ?>
+                                        <span style="color: #666; font-style: italic;">Current User</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -119,8 +123,9 @@ $conn->close();
             <?php endif; ?>
         </section>
     </main>
-    <script src="/js/main.js"></script>
-    <script src="/js/admin.js"></script>
+    
+    <script src="../../../js/main.js"></script>
+    <script src="../../../js/admin.js"></script>
 </body>
 
 </html>
