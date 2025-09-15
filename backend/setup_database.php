@@ -15,6 +15,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
 // 1. Create the main database if it doesn't exist
 $sql_create_db = "CREATE DATABASE IF NOT EXISTS $db_name";
 if ($conn->query($sql_create_db) === TRUE) {
@@ -64,6 +65,7 @@ $sql_create_services_table = "
 CREATE TABLE IF NOT EXISTS Services (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   service_name VARCHAR(100) NOT NULL,
+  subtitle TEXT NOT NULL,
   description TEXT NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -92,6 +94,23 @@ if ($conn->query($sql_create_services_table) === TRUE) {
     echo "Table 'services' created successfully or already exists.<br>";
 } else {
     echo "Error creating table 'services': " . $conn->error . "<br>";
+}
+
+$adminEmail = '20033379@students.koi.edu.au';
+
+$checkAdminSql = "SELECT id FROM users WHERE email = '$adminEmail'";
+$adminResult = $conn->query($checkAdminSql);
+
+if ($adminResult->num_rows == 0) {
+    $hashedPassword = password_hash("admin123", PASSWORD_DEFAULT);
+    $insertAdminSql = "INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES ('Bijaya', 'Lama', '$adminEmail', '0123456789', '$hashedPassword', 'admin')";
+    if ($conn->query($insertAdminSql) === TRUE) {
+        echo "Default admin user inserted successfully.<br>";
+    } else {
+        echo "Error inserting admin user: " . $conn->error . "<br>";
+    }
+} else {
+    echo "Admin user already exists.<br>";
 }
 
 $conn->close();
