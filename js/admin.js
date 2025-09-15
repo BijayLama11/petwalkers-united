@@ -68,29 +68,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // NEW: Handle User Management Forms
-  if (addUserForm) {
-    addUserForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      try {
-        const response = await fetch("add_user.php", {
-          method: "POST",
-          body: formData,
-        });
-        const result = await response.json();
-        if (response.ok) {
-          showStatus("success", result.message);
-          this.reset();
-          location.reload(); // Simple reload to refresh the table
-        } else {
-          showStatus("error", result.message);
-        }
-      } catch (error) {
-        showStatus("error", "An unexpected error occurred.");
-      }
-    });
-  }
+if (addUserForm) {
+        addUserForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(addUserForm);
+            const statusMsg = document.getElementById('status-message');
+            statusMsg.textContent = 'Adding user...';
 
+            try {
+                const response = await fetch('add_user.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    statusMsg.textContent = result.message;
+                    statusMsg.style.color = 'green';
+                    setTimeout(() => location.reload(), 1200);
+                } else {
+                    statusMsg.textContent = result.message;
+                    statusMsg.style.color = 'red';
+                }
+            } catch (err) {
+                statusMsg.textContent = 'An error occurred.';
+                statusMsg.style.color = 'red';
+            }
+        });
+    }
+
+    
   if (usersTable) {
     usersTable.addEventListener("click", async function (e) {
       if (e.target.classList.contains("delete-user-btn")) {

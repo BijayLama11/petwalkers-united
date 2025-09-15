@@ -45,7 +45,7 @@ $conn->close();
           <li><a href="about.html">About</a></li>
           <li><a href="services.php" aria-current="page">Services</a></li>
           <li><a href="gallery.php">Gallery</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.php">Contact</a></li>
           <li><a href="login.html" class="active">Log In</a></li>
         </ul>
       </nav>
@@ -82,7 +82,7 @@ $conn->close();
               ?>
             </ul>
             <p class="price">$<?php echo htmlspecialchars($service['price']); ?></p>
-            <a class="btn btn-primary" href="contact.html">Book</a>
+            <a class="btn btn-primary" href="contact.php">Book</a>
           </article>
         <?php endforeach; ?>
       <?php else: ?>
@@ -186,7 +186,7 @@ $conn->close();
     </div>
   </footer>
 
-  <script src="assets/js/main.js" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 
 </html>

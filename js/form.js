@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     name: document.getElementById('name'),
     email: document.getElementById('email'),
     phone: document.getElementById('phone'),
-    service: document.getElementById('service'),
+    subject: document.getElementById('subject'), 
     date: document.getElementById('date'),
     time: document.getElementById('time'),
     consent: document.getElementById('consent')
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     name: document.getElementById('err-name'),
     email: document.getElementById('err-email'),
     phone: document.getElementById('err-phone'),
-    service: document.getElementById('err-service'),
+    subject: document.getElementById('err-subject'),
     consent: document.getElementById('err-consent')
   };
 
@@ -173,9 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         break;
 
-      case 'service':
+      case 'subject': // Changed from 'service'
         if (!field.value) {
-          showError('service', 'Please select a service.');
+          showError('subject', 'Please select a service.');
           return false;
         }
         break;
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearAllErrors();
     let isValid = true;
 
-    const fieldsToValidate = ['name', 'email', 'phone', 'service', 'consent'];
+    const fieldsToValidate = ['name', 'email', 'phone', 'subject', 'consent'];
     fieldsToValidate.forEach(function(fieldName) {
       if (!validateField(fieldName)) {
         isValid = false;
@@ -212,22 +212,63 @@ document.addEventListener('DOMContentLoaded', function() {
     return isValid;
   }
 
-  form.addEventListener('submit', function(e) {
+  // UPDATED FORM SUBMISSION
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
     clearStatus();
 
     if (validateForm()) {
-      showNotification(
-        'success',
-        'Message Sent Successfully',
-        'Thanks for reaching out. We will get back to you within one business day.',
-        5000
-      );
-      
-      setTimeout(function() {
-        form.reset();
-      }, 1000);
-      
+      try {
+        const formData = new FormData(form);
+        
+        // Create a comprehensive message from form data
+        const date = formData.get('date');
+        const time = formData.get('time');
+        const phone = formData.get('phone');
+        const originalMessage = formData.get('message') || '';
+        
+        let fullMessage = originalMessage;
+        if (date && time) {
+          fullMessage += `\n\nPreferred Date: ${date}\nPreferred Time: ${time}`;
+        }
+        if (phone) {
+          fullMessage += `\nPhone: ${phone}`;
+        }
+        
+        // Update the message in formData
+        formData.set('message', fullMessage);
+        
+        const response = await fetch('backend/modules/contact/process_contact_form.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification(
+            'success',
+            'Message Sent Successfully',
+            'Thanks for reaching out. We will get back to you within one business day.',
+            5000
+          );
+          setTimeout(() => form.reset(), 1000);
+        } else {
+          showNotification(
+            'error',
+            'Submission Failed',
+            result.message,
+            4000
+          );
+        }
+      } catch (error) {
+        showNotification(
+          'error',
+          'Connection Error',
+          'Please check your connection and try again.',
+          4000
+        );
+      }
     } else {
       showNotification(
         'error',

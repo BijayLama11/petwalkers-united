@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS Users (
   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );";
 
+
 // 3. SQL to create the `contact_submissions` table
 $sql_create_contact_table = "
 CREATE TABLE IF NOT EXISTS contact_submissions (
@@ -48,6 +49,7 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
   email VARCHAR(100) NOT NULL,
   subject VARCHAR(255) NOT NULL,
   message TEXT NOT NULL,
+  viewed TINYINT(1) DEFAULT 0,
   submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );";
 

@@ -33,8 +33,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.php">Services</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="contact.html" aria-current="page">Contact</a></li>
+            <li><a href="gallery.php">Gallery</a></li>
+            <li><a href="contact.php" aria-current="page">Contact</a></li>
             <li><a href="login.html" class="active">Log In</a></li>
           </ul>
         </nav>
@@ -53,9 +53,10 @@
 
       <section class="container" aria-labelledby="contact-heading">
         <h2 id="contact-heading">Send a message</h2>
-        <form
-          id="contact-form"
+
+        <form id="contact-form"
           class="form"
+          method="POST"
           novalidate
           aria-describedby="form-help"
         >
@@ -63,6 +64,7 @@
             Fields marked * are required. We protect your privacy and never
             share data.
           </p>
+
           <div class="field">
             <label for="name">Full Name <span class="required">*</span></label>
             <input
@@ -95,6 +97,8 @@
               role="alert"
               aria-live="polite"
             ></span>
+
+
           </div>
           <div class="field">
             <label for="phone">Phone</label>
@@ -113,21 +117,19 @@
               aria-live="polite"
             ></span>
           </div>
+
           <div class="field">
-            <label for="service">Service <span class="required">*</span></label>
-            <select id="service" name="service" required>
+            <label for="subject">Service <span class="required">*</span></label>
+            <select id="subject" name="subject" required>
               <option value="" disabled selected>Select one</option>
-              <option>Quick Stretch</option>
-              <option>Standard Walk</option>
-              <option>Drop-in Sit</option>
+              <option value="Quick Stretch">Quick Stretch</option>
+              <option value="Standard Walk">Standard Walk</option>
+              <option value="Drop-in Sit">Drop-in Sit</option>
             </select>
-            <span
-              class="error"
-              id="err-service"
-              role="alert"
-              aria-live="polite"
-            ></span>
+            <span class="error" id="err-subject" role="alert" aria-live="polite"></span>
           </div>
+
+          
           <div class="field inline">
             <div>
               <label for="date">Preferred Date <span class="required">*</span></label>
@@ -138,6 +140,7 @@
               <input id="time" name="time" type="time" required />
             </div>
           </div>
+
           <div class="field">
             <label for="message">Message</label>
             <textarea
@@ -148,6 +151,7 @@
               placeholder="Tell us about your pet, routine, and any special notes."
             ></textarea>
           </div>
+
           <div class="field checkbox">
             <input
               id="consent"
