@@ -53,7 +53,7 @@ $conn->close();
             <li><a href="about.html">About</a></li>
             <li><a href="services.php">Services</a></li>
             <li><a href="gallery.php" aria-current="page">Gallery</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="contact.php">Contact</a></li>
             <li><a href="login.html" class="active">Log In</a></li>
           </ul>
         </nav>

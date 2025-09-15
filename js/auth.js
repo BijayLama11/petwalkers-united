@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (statusMessage) {
       statusMessage.textContent = message;
       statusMessage.className = `status ${type}`;
-      statusMessage.className = `status ${type}`;
       setTimeout(() => {
         statusMessage.className = "status";
       }, 5000);
@@ -31,11 +30,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await response.json();
 
         if (response.ok) {
-          showStatus("success", "Login successful!");
-          // Redirect to the admin dashboard after a short delay
+          showStatus("success", `Welcome ${result.firstName}! Redirecting...`);
+          
+          // Role-based redirection
           setTimeout(() => {
-            window.location.href = "backend/modules/admin/dashboard.php";
-          }, 1000);
+            if (result.role === 'admin') {
+              // Open admin dashboard in new tab
+              window.open("backend/modules/admin/dashboard.php", "_blank");
+              // Redirect current tab to home
+              window.location.href = "index.html";
+            } else {
+              // Regular user - redirect to user dashboard
+              window.location.href = "user-dashboard.php";
+            }
+          }, 1500);
         } else {
           showStatus("error", result.message);
         }
@@ -51,9 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       const formData = new FormData(this);
 
-      // Client-side form validation (optional, as PHP script also validates)
+      // Client-side form validation
       const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
       if (password !== confirmPassword) {
         showStatus("error", "Passwords do not match.");
         return;
@@ -67,8 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await response.json();
 
         if (response.ok) {
-          showStatus("success", "Registration successful! You can now log in.");
-          // Redirect to the login page after a short delay
+          showStatus("success", "Registration successful! You can now log in as a user.");
+          // Clear form
+          this.reset();
+          // Redirect to login page after a delay
           setTimeout(() => {
             window.location.href = "login.html";
           }, 2000);

@@ -141,7 +141,9 @@ $conn->close();
         </section>
     </main>
 
-    <script src="../../../js/main.js"></script>
+
+<!-- //JS to handle image insertion and deletion -->
+    <script src="js/main.js"></script>
     <script>
         function showStatus(type, message) {
             const statusDiv = document.getElementById('status-message');

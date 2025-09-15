@@ -53,15 +53,15 @@ $conn->close();
             <h2>Manage Users</h2>
             <div id="status-message" class="status"></div>
 
-            <form id="add-user-form" class="admin-form">
+             <form id="add-user-form" class="admin-form" method="POST" action="#">
                 <h3>Add New User</h3>
                 <div class="field">
-                    <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="firstName" required>
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
                 </div>
                 <div class="field">
-                    <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="lastName" required>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
@@ -77,7 +77,7 @@ $conn->close();
                 </div>
                 <div class="field">
                     <label for="role">Role</label>
-                    <select id="role" name="role">
+                    <select id="role" name="role" required>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>

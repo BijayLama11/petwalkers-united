@@ -78,7 +78,18 @@ $conn->close();
                                 <td><?php echo htmlspecialchars($contact['email']); ?></td>
                                 <td><?php echo htmlspecialchars($contact['subject']); ?></td>
                                 <td><?php echo htmlspecialchars($contact['submission_date']); ?></td>
-                                <td><?php echo htmlspecialchars($contact['message']); ?></td>
+
+                                <td>
+                                <?php
+                                    $msg = $contact['message'];                                   
+                                    $msg = str_replace(['\\r\\n','\\n','\\r'], "\n", $msg);
+                                    echo nl2br(htmlspecialchars($msg));
+                                ?>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger delete-contact-btn" data-id="<?php echo $contact['id']; ?>">Delete</button>
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
