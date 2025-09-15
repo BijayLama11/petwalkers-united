@@ -44,8 +44,9 @@ $conn->close();
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="services.php" aria-current="page">Services</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="gallery.php">Gallery</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html" class="active">Log In</a></li>
         </ul>
       </nav>
     </div>
