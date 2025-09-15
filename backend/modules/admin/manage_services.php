@@ -45,6 +45,7 @@ if ($result && $result->num_rows > 0) {
                     <li><a href="dashboard.php">Contact Submissions</a></li>
                     <li><a href="manage_services.php" class="active">Manage Services</a></li>
                     <li><a href="manage_users.php">Manage Users</a></li>
+                    <li><a href="manage_gallery.php">Manage Gallery</a></li>
                     <li><a href="../../logout.php" class="logout-link">Logout</a></li>
                 </ul>
             </nav>

@@ -1,3 +1,19 @@
+<?php
+// Fetch gallery images from database
+require_once 'backend/config/db_config.php';
+
+$sql = "SELECT id, image_url, caption, upload_date FROM gallery_images ORDER BY upload_date DESC";
+$result = $conn->query($sql);
+$galleryImages = [];
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $galleryImages[] = $row;
+    }
+}
+$conn->close();
+?>
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -36,8 +52,9 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.php">Services</a></li>
-            <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+            <li><a href="gallery.php" aria-current="page">Gallery</a></li>
             <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html" class="active">Log In</a></li>
           </ul>
         </nav>
       </div>
@@ -67,73 +84,32 @@
       </section>
 
       <section class="container" aria-label="Photo grid">
-        <ul class="thumb-grid" role="list">
-          <li>
-            <button
-              class="thumb"
-              data-full="img/gallery/happy-dog.jpg"
-              data-caption="Prewalk excitement"
-              aria-label="Open larger image: Prewalk excitement"
-            >
-              <img
-                src="img/gallery/happy-dog.jpg"
-                alt="Smiling dog ready for a walk"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              class="thumb"
-              data-full="img/gallery/dog-run.jpg"
-              data-caption="Neighbourhood stroll"
-              aria-label="Open larger image: Neighbourhood stroll"
-            >
-              <img
-                src="img/gallery/dog-run.jpg"
-                alt="Two dogs walking on a path"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              class="thumb"
-              data-full="img/gallery/dog-drinking-water.jpg"
-              data-caption="Water break"
-              aria-label="Open larger image: Water break"
-            >
-              <img
-                src="img/gallery/dog-drinking-water.jpg"
-                alt="Dog drinking water during a break"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              class="thumb"
-              data-full="img/gallery/cat-napping.jpg"
-              data-caption="Cozy cat sit"
-              aria-label="Open larger image: Cozy cat sit"
-            >
-              <img
-                src="img/gallery/cat-napping.jpg"
-                alt="Cat napping on a sofa"
-              />
-            </button>
-          </li>
-          <li>
-            <button
-              class="thumb"
-              data-full="img/gallery/dog-smiling.jpg"
-              data-caption="Postwalk smiles"
-              aria-label="Open larger image: Postwalk smiles"
-            >
-              <img
-                src="img/gallery/dog-smiling.jpg"
-                alt="Dog smiling after a walk"
-              />
-            </button>
-          </li>
-        </ul>
+        <?php if (count($galleryImages) > 0): ?>
+          <ul class="thumb-grid" role="list">
+            <?php foreach ($galleryImages as $image): ?>
+              <li>
+                <button
+                  class="thumb"
+                  data-full="<?php echo htmlspecialchars($image['image_url']); ?>"
+                  data-caption="<?php echo htmlspecialchars($image['caption']); ?>"
+                  aria-label="Open larger image: <?php echo htmlspecialchars($image['caption']); ?>"
+                >
+                  <img
+                    src="<?php echo htmlspecialchars($image['image_url']); ?>"
+                    alt="<?php echo htmlspecialchars($image['caption']); ?>"
+                  />
+                </button>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        <?php else: ?>
+          <div class="no-images" style="text-align: center; padding: 4rem 0;">
+            <h2 style="color: var(--muted); margin-bottom: 1rem;">No Images Yet</h2>
+            <p style="color: var(--muted); font-size: 1.1rem;">
+              We're building our gallery! Check back soon to see photos of our happy pets.
+            </p>
+          </div>
+        <?php endif; ?>
       </section>
 
       <!-- Modal viewer -->
