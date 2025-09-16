@@ -55,4 +55,10 @@ documentation/ # Screenshots & report
 - Role-based access control  
 - Input validation & sanitization  
 - SQL/XSS protection  
-- Secure session management  
+- Secure session management
+
+---
+
+## Created by :
+- Razat Siwakoti, Bijaya Lama, Milan Bhusal
+- MIT, KOI, Newcastle, Sydney
