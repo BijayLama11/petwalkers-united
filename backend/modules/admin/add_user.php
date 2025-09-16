@@ -3,15 +3,16 @@ session_start();
 header('Content-Type: application/json');
 require_once '../../config/db_config.php';
 
-// Check if user is logged in and is admin
+// Restrict access: only logged-in admins can use this script
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['role'] !== 'admin') {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Access denied.']);
     exit;
 }
 
+// Handle POST request to add a new user
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Get and sanitize input data
+    // Collect and sanitize input data
     $firstName = trim($_POST['firstName'] ?? '');
     $lastName = trim($_POST['lastName'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -55,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $conn->error]);
         exit;
     }
-    
+
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -68,10 +69,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $stmt->close();
 
-    // Hash the password
+    // Hash password for secure storage
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Insert new user
+    // Insert new user record into database
     $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -79,13 +80,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $conn->error]);
         exit;
     }
-    
+
     $stmt->bind_param("ssssss", $firstName, $lastName, $email, $phone, $hashed_password, $role);
 
+    // Execute insertion and return response
     if ($stmt->execute()) {
         $newUserId = $conn->insert_id;
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'message' => "User '$firstName $lastName' added successfully as $role.",
             'user_id' => $newUserId
         ]);
@@ -96,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $stmt->close();
 } else {
+    // Reject non-POST requests
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed.']);
 }

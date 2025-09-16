@@ -1,5 +1,8 @@
 <?php
-// Fetch services from database for the dropdown
+session_start();
+
+// Fetch services from the database for the dropdown
+// Adjust the path to your db_config.php file
 require_once 'backend/config/db_config.php';
 
 $sql = "SELECT service_name FROM services ORDER BY service_name ASC";
@@ -7,77 +10,73 @@ $result = $conn->query($sql);
 $services = [];
 
 if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $services[] = $row['service_name'];
-    }
+  while ($row = $result->fetch_assoc()) {
+    $services[] = $row['service_name'];
+  }
 }
 
 // Close connection after fetching services
 $conn->close();
+
+// Check if the user is logged in
+$is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
+
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contact | PetWalkers United</title>
-    <meta
-      name="description"
-      content="Contact PetWalkers United. Book dog walks, pet sitting, or a meet &amp; greet."
-    />
-    <link rel="icon" type="image/x-icon" href="img/logo.svg">
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/contact.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header" role="banner">
-      <div class="container header-inner">
-        <a class="brand" href="/" aria-label="PetWalkers United home">
-          <img src="img/logo.svg" alt="" width="44" height="44" />
-          <span class="brand-text">PetWalkers United</strong></span>
-        </a>
-        <button
-          class="nav-toggle"
-          aria-controls="site-nav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="nav-toggle-bar" aria-hidden="true"></span>
-        </button>
-        <nav id="site-nav" class="site-nav" aria-label="Primary">
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.php">Services</a></li>
-            <li><a href="gallery.php">Gallery</a></li>
-            <li><a href="contact.php" aria-current="page">Contact</a></li>
-            <li><a href="login.html" class="active">Log In</a></li>
-          </ul>
-        </nav>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact | PetWalkers United</title>
+  <meta name="description" content="Contact PetWalkers United. Book dog walks, pet sitting, or a meet &amp; greet." />
+  <link rel="icon" type="image/x-icon" href="img/logo.svg" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="PetWalkers United home">
+        <img src="img/logo.svg" alt="" width="44" height="44" />
+        <span class="brand-text">PetWalkers United</strong></span>
+      </a>
+      <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.php">Services</a></li>
+          <li><a href="gallery.php">Gallery</a></li>
+          <li><a href="contact.php" aria-current="page">Contact</a></li>
+          <li><a href="login.html" class="active">Log In</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="heading-content">
+      <div class="container">
+        <h1>Contact Us</h1>
+        <p class="lead">
+          Have questions about our services? Ready to book? We're here to help
+          and always respond within one business day.
+        </p>
       </div>
-    </header>
+    </section>
 
-    <main id="main">
-      <section class="heading-content">
-        <div class="container">
-          <h1>Contact Us</h1>
-          <p class="lead">
-            Have questions about our services? Ready to book? We're here to help and always respond within one business day.
-          </p>
-        </div>
-      </section>
+    <section class="container" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Send a message</h2>
 
-      <section class="container" aria-labelledby="contact-heading">
-        <h2 id="contact-heading">Send a message</h2>
-
-        <form id="contact-form"
-          class="form"
-          method="POST"
-          novalidate
-          aria-describedby="form-help"
-        >
+      <?php if ($is_logged_in): ?>
+        <form id="contact-form" class="form" method="POST" novalidate aria-describedby="form-help">
           <p id="form-help" class="muted">
             Fields marked * are required. We protect your privacy and never
             share data.
@@ -85,55 +84,18 @@ $conn->close();
 
           <div class="field">
             <label for="name">Full Name <span class="required">*</span></label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              minlength="2"
-              autocomplete="name"
-            />
-            <span
-              class="error"
-              id="err-name"
-              role="alert"
-              aria-live="polite"
-            ></span>
+            <input id="name" name="name" type="text" required minlength="2" autocomplete="name" />
+            <span class="error" id="err-name" role="alert" aria-live="polite"></span>
           </div>
           <div class="field">
             <label for="email">Email <span class="required">*</span></label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-            />
-            <span
-              class="error"
-              id="err-email"
-              role="alert"
-              aria-live="polite"
-            ></span>
-
-
+            <input id="email" name="email" type="email" required autocomplete="email" />
+            <span class="error" id="err-email" role="alert" aria-live="polite"></span>
           </div>
           <div class="field">
             <label for="phone">Phone</label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              pattern="^[0-9 +()-]{8,}$"
-              inputmode="tel"
-              autocomplete="tel"
-            />
-            <span
-              class="error"
-              id="err-phone"
-              role="alert"
-              aria-live="polite"
-            ></span>
+            <input id="phone" name="phone" type="tel" pattern="^[0-9 +()-]{8,}$" inputmode="tel" autocomplete="tel" />
+            <span class="error" id="err-phone" role="alert" aria-live="polite"></span>
           </div>
 
           <div class="field">
@@ -156,7 +118,6 @@ $conn->close();
             <span class="error" id="err-subject" role="alert" aria-live="polite"></span>
           </div>
 
-          
           <div class="field inline">
             <div>
               <label for="date">Preferred Date <span class="required">*</span></label>
@@ -170,82 +131,63 @@ $conn->close();
 
           <div class="field">
             <label for="message">Message</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              maxlength="800"
-              placeholder="Tell us about your pet, routine, and any special notes."
-            ></textarea>
+            <textarea id="message" name="message" rows="5" maxlength="800"
+              placeholder="Tell us about your pet, routine, and any special notes."></textarea>
           </div>
 
           <div class="field checkbox">
-            <input
-              id="consent"
-              name="consent"
-              type="checkbox"
-              required
-              aria-describedby="consent-desc"
-            />
+            <input id="consent" name="consent" type="checkbox" required aria-describedby="consent-desc" />
             <label for="consent">I agree to the privacy notice <span class="required">*</span></label>
           </div>
           <p id="consent-desc" class="muted small">
             We only use your details to respond to your enquiry. No data is
             sold or retained beyond necessity.
           </p>
-          <span
-            class="error"
-            id="err-consent"
-            role="alert"
-            aria-live="polite"
-          ></span>
+          <span class="error" id="err-consent" role="alert" aria-live="polite"></span>
           <div class="actions">
             <button class="btn btn-primary" type="submit">Send</button>
             <button class="btn btn-outline" type="reset">Reset</button>
           </div>
-          <p
-            id="form-status"
-            class="status"
-            role="status"
-            aria-live="polite"
-          ></p>
+          <p id="form-status" class="status" role="status" aria-live="polite"></p>
         </form>
-      </section>
-    </main>
-
-    <footer class="site-footer" role="contentinfo">
-      <div class="container footer-inner">
-        <div>
-          <a class="brand small" href="/">
-            <img src="img/logo.svg" alt="" width="32" height="32" />
-            <span class="brand-text">PetWalkers United</span>
-          </a>
-          <p class="foot-tag">Local dog walking &amp; pet sitting services.</p>
+      <?php else: ?>
+        <div class="not-logged-in-message"
+          style="text-align: center; padding: 4rem; background: #f9f9f9; border-radius: 8px;">
+          <h3 style="color: var(--primary);">Please Log In to Contact Us</h3>
+          <p style="font-size: 1.1rem; color: #666; margin-top: 1rem;">
+            To ensure the best service and to protect your privacy, we require you to be logged in before submitting an
+            inquiry.
+          </p>
+          <a href="login.html" class="btn btn-primary" style="margin-top: 2rem;">Log In Now</a>
         </div>
-        <address class="foot-contact" aria-label="Contact details">
-          <a href="mailto:hello@petwalkersunited.example.au"
-            >hello@petwalkersunited.example.au</a
-          >
-          <a href="tel:+61414408871"
-            ><i class="fa fa-phone"></i> 0414 408 871</a
-          >
-          <div class="social" role="group" aria-label="Social media">
-            <a href="#" aria-label="Follow on Instagram"
-              ><i class="fa fa-instagram"></i> Instagram</a
-            >
-            <a href="#" aria-label="Follow on Facebook"
-              ><i class="fa fa-facebook"></i> Facebook</a
-            >
-          </div>
-        </address>
-        <small
-          >&copy; <span id="year"></span> PetWalkers United. All rights
-          reserved.</small
-        >
-      </div>
-    </footer>
+      <?php endif; ?>
+    </section>
+  </main>
 
-    <script src="js/main.js" defer></script>
-    <script src="js/form.js" defer></script>
-  </body>
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div>
+        <a class="brand small" href="/">
+          <img src="img/logo.svg" alt="" width="32" height="32" />
+          <span class="brand-text">PetWalkers United</span>
+        </a>
+        <p class="foot-tag">Local dog walking &amp; pet sitting services.</p>
+      </div>
+      <address class="foot-contact" aria-label="Contact details">
+        <a href="mailto:hello@petwalkersunited.example.au">hello@petwalkersunited.example.au</a>
+        <a href="tel:+61414408871"><i class="fa fa-phone"></i> 0414 408 871</a>
+        <div class="social" role="group" aria-label="Social media">
+          <a href="#" aria-label="Follow on Instagram"><i class="fa fa-instagram"></i> Instagram</a>
+          <a href="#" aria-label="Follow on Facebook"><i class="fa fa-facebook"></i> Facebook</a>
+        </div>
+      </address>
+      <small>&copy; <span id="year"></span> PetWalkers United. All rights
+        reserved.</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/form.js" defer></script>
+</body>
+
 </html>

@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
 require_once '../../config/db_config.php';
 
 // Fetch all contact submissions
-$sql = "SELECT id, name, email, subject, message, submission_date FROM contact_submissions ORDER BY submission_date DESC";
+$sql = "SELECT id, name, email, phone, subject, message, submission_date FROM contact_submissions ORDER BY submission_date DESC";
 $result = $conn->query($sql);
 $contacts = [];
 
@@ -49,6 +49,7 @@ $conn->close();
         <aside class="sidebar">
             <nav>
                 <ul>
+                    <li><a href="/petwalkers-united/index.html">Home</a></li>
                     <li><a href="dashboard.php" class="active">Contact Submissions</a></li>
                     <li><a href="manage_services.php">Manage Services</a></li>
                     <li><a href="manage_users.php">Manage Users</a></li>
@@ -61,11 +62,12 @@ $conn->close();
         <section class="content">
             <h2>Contact Submissions</h2>
             <?php if (count($contacts) > 0): ?>
-                <table>
+                <table class="dashborad-table">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Subject</th>
                             <th>Date</th>
                             <th>Message</th>
@@ -76,18 +78,20 @@ $conn->close();
                             <tr>
                                 <td><?php echo htmlspecialchars($contact['name']); ?></td>
                                 <td><?php echo htmlspecialchars($contact['email']); ?></td>
+                                <td><?php echo htmlspecialchars($contact['phone']); ?></td>
                                 <td><?php echo htmlspecialchars($contact['subject']); ?></td>
                                 <td><?php echo htmlspecialchars($contact['submission_date']); ?></td>
 
                                 <td>
-                                <?php
-                                    $msg = $contact['message'];                                   
-                                    $msg = str_replace(['\\r\\n','\\n','\\r'], "\n", $msg);
+                                    <?php
+                                    $msg = $contact['message'];
+                                    $msg = str_replace(['\\r\\n', '\\n', '\\r'], "\n", $msg);
                                     echo nl2br(htmlspecialchars($msg));
-                                ?>
+                                    ?>
                                 </td>
                                 <td>
-                                    <button class="btn btn-danger delete-contact-btn" data-id="<?php echo $contact['id']; ?>">Delete</button>
+                                    <button class="btn btn-danger delete-contact-btn"
+                                        data-id="<?php echo $contact['id']; ?>">Delete</button>
                                 </td>
 
                             </tr>

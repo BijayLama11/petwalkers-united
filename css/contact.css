@@ -1,111 +1,114 @@
 /* Contact Form Styles */
+.container {
+  margin-inline: auto;
+}
 .form {
-    max-width: 760px;
-  }
-  
-  .field {
-    margin: 1rem 0;
-  }
-  
+  max-width: 760px;
+}
+
+.field {
+  margin: 1rem 0;
+}
+
+.field.inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field label {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.7rem;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.02);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  border-color: var(--brand);
+}
+
+.field.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.field.checkbox input {
+  width: auto;
+  margin: 0;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.field.checkbox label {
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+.field.checkbox p {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* Form Validation */
+.error {
+  display: block;
+  color: var(--warn);
+  font-size: 0.9rem;
+  min-height: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.status {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+}
+
+.status.success {
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+  color: var(--ok);
+}
+
+.status.error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: var(--warn);
+}
+
+/* Form Actions */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Responsive Form */
+@media (max-width: 640px) {
   .field.inline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr;
   }
-  
-  .field label {
-    font-weight: 600;
-    margin-bottom: 0.35rem;
-    display: block;
-  }
-  
-  .field input,
-  .field select,
-  .field textarea {
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 0.7rem;
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.02);
-    font-size: 1rem;
-    font-family: inherit;
-  }
-  
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus {
-    outline: 3px solid rgba(37, 99, 235, 0.35);
-    border-color: var(--brand);
-  }
-  
-  .field.checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-  
-  .field.checkbox input {
-    width: auto;
-    margin: 0;
-    flex-shrink: 0;
-    margin-top: 0.25rem;
-  }
-  
-  .field.checkbox label {
-    margin-bottom: 0;
-    flex-grow: 1;
-  }
-  
-  .field.checkbox p {
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-  }
-  
-  /* Form Validation */
-  .error {
-    display: block;
-    color: var(--warn);
-    font-size: 0.9rem;
-    min-height: 1.25rem;
-    margin-top: 0.25rem;
-  }
-  
-  .status {
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
-  }
-  
-  .status.success {
-    background: #ecfdf5;
-    border: 1px solid #86efac;
-    color: var(--ok);
-  }
-  
-  .status.error {
-    background: #fef2f2;
-    border: 1px solid #fca5a5;
-    color: var(--warn);
-  }
-  
-  /* Form Actions */
+
   .actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    flex-direction: column;
   }
-  
-  /* Responsive Form */
-  @media (max-width: 640px) {
-    .field.inline {
-      grid-template-columns: 1fr;
-    }
-  
-    .actions {
-      flex-direction: column;
-    }
-  
-    .actions .btn {
-      width: 100%;
-    }
+
+  .actions .btn {
+    width: 100%;
   }
+}

@@ -115,3 +115,33 @@ th {
   border: 1px solid #f5c6cb;
   display: block;
 }
+
+.field select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #555;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.field select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.user-container{
+  display: block;
+  margin-right: 50px;
+  width: 45%;
+}
+
+#users-table, .dashborad-table{
+  background-color: #f9f9f9;
+}

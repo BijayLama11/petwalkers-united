@@ -31,10 +31,10 @@ if ($result && $result->num_rows > 0) {
 </head>
 
 <body>
-
     <header class="admin-header">
         <div class="container header-inner">
             <h1>Admin Dashboard</h1>
+            <p>Welcome, <?php echo htmlspecialchars($_SESSION['firstName']); ?>!</p>
         </div>
     </header>
 
@@ -42,6 +42,7 @@ if ($result && $result->num_rows > 0) {
         <aside class="sidebar">
             <nav>
                 <ul>
+                    <li><a href="/petwalkers-united/index.html">Home</a></li>
                     <li><a href="dashboard.php">Contact Submissions</a></li>
                     <li><a href="manage_services.php" class="active">Manage Services</a></li>
                     <li><a href="manage_users.php">Manage Users</a></li>
@@ -63,11 +64,13 @@ if ($result && $result->num_rows > 0) {
                 </div>
                 <div class="field">
                     <label for="subtitle">Subtitle</label>
-                    <input type="text" id="subtitle" name="subtitle" required placeholder="Brief description of the service">
+                    <input type="text" id="subtitle" name="subtitle" required
+                        placeholder="Brief description of the service">
                 </div>
                 <div class="field">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" required placeholder="Detailed description with features (each line will be a bullet point)"></textarea>
+                    <textarea id="description" name="description" required
+                        placeholder="Detailed description with features (each line will be a bullet point)"></textarea>
                     <small style="color: #666;">Each line will appear as a bullet point in the service card</small>
                 </div>
                 <div class="field">
@@ -95,7 +98,7 @@ if ($result && $result->num_rows > 0) {
                                 <td><?php echo htmlspecialchars($service['service_name']); ?></td>
                                 <td><?php echo htmlspecialchars($service['subtitle'] ?? ''); ?></td>
                                 <td style="max-width: 300px; word-wrap: break-word;">
-                                    <?php 
+                                    <?php
                                     $description = $service['description'] ?? '';
                                     // If description is long, truncate it for table display
                                     if (strlen($description) > 100) {

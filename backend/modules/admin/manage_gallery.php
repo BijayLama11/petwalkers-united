@@ -20,6 +20,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +36,15 @@ $conn->close();
             gap: 1.5rem;
             margin-top: 2rem;
         }
-        
+
         .gallery-item {
             border: 1px solid #ddd;
             padding: 1rem;
             border-radius: 8px;
             background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         .gallery-item img {
             width: 100%;
             height: 180px;
@@ -51,25 +52,26 @@ $conn->close();
             border-radius: 4px;
             margin-bottom: 0.5rem;
         }
-        
+
         .gallery-item-info {
             font-size: 0.9rem;
             color: #666;
             margin-bottom: 1rem;
         }
-        
+
         .gallery-item-caption {
             font-weight: 600;
             color: #333;
             margin-bottom: 0.5rem;
         }
-        
+
         .gallery-item-date {
             font-size: 0.8rem;
             color: #999;
         }
     </style>
 </head>
+
 <body>
     <header class="admin-header">
         <div class="container header-inner">
@@ -77,11 +79,12 @@ $conn->close();
             <p>Welcome, <?php echo htmlspecialchars($_SESSION['firstName']); ?>!</p>
         </div>
     </header>
-    
+
     <main class="container admin-main">
         <aside class="sidebar">
             <nav>
                 <ul>
+                    <li><a href="/petwalkers-united/index.html">Home</a></li>
                     <li><a href="dashboard.php">Contact Submissions</a></li>
                     <li><a href="manage_services.php">Manage Services</a></li>
                     <li><a href="manage_users.php">Manage Users</a></li>
@@ -95,16 +98,16 @@ $conn->close();
             <h2>Manage Gallery</h2>
             <div id="status-message" class="status"></div>
 
-            <form id="add-image-form" class="admin-form">
+            <form id="add-image-form" class="admin-form" enctype="multipart/form-data">
                 <h3>Add New Image</h3>
                 <div class="field">
-                    <label for="image-url">Image Path/URL</label>
-                    <input type="text" id="image-url" name="image_url" required placeholder="e.g., img/gallery/dog-happy.jpg or https://example.com/image.jpg">
-                    <small style="color: #666; font-size: 0.85rem;">Enter a local path starting with 'img/' or a full URL</small>
+                    <label for="image-file">Select Image File</label>
+                    <input type="file" id="image-file" name="image_file" accept="image/*" required>
                 </div>
                 <div class="field">
                     <label for="caption">Caption</label>
-                    <input type="text" id="caption" name="caption" required placeholder="e.g., Happy dog after morning walk">
+                    <input type="text" id="caption" name="caption" required
+                        placeholder="e.g., Happy dog after morning walk">
                 </div>
                 <button type="submit" class="btn btn-primary">Add Image</button>
             </form>
@@ -114,9 +117,9 @@ $conn->close();
                 <div class="gallery-grid">
                     <?php foreach ($images as $image): ?>
                         <div class="gallery-item">
-                            <img src="../../../<?php echo htmlspecialchars($image['image_url']); ?>" 
-                                 alt="<?php echo htmlspecialchars($image['caption']); ?>"
-                                 onerror="this.src='../../../img/placeholder.jpg';">
+                            <img src="../../../<?php echo htmlspecialchars($image['image_url']); ?>"
+                                alt="<?php echo htmlspecialchars($image['caption']); ?>"
+                                onerror="this.src='../../../img/placeholder.jpg';">
                             <div class="gallery-item-info">
                                 <div class="gallery-item-caption">
                                     <?php echo htmlspecialchars($image['caption']); ?>
@@ -142,7 +145,7 @@ $conn->close();
     </main>
 
 
-<!-- //JS to handle image insertion and deletion -->
+    <!-- //JS to handle image insertion and deletion -->
     <script src="js/main.js"></script>
     <script>
         function showStatus(type, message) {
@@ -155,17 +158,17 @@ $conn->close();
         }
 
         // Add image functionality
-        document.getElementById('add-image-form').addEventListener('submit', async function(e) {
+        document.getElementById('add-image-form').addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = new FormData(this);
-            
+
             try {
                 const response = await fetch('add_gallery_image.php', {
                     method: 'POST',
                     body: formData
                 });
                 const result = await response.json();
-                
+
                 if (result.success) {
                     showStatus('success', result.message);
                     this.reset();
@@ -179,20 +182,20 @@ $conn->close();
         });
 
         // Delete image functionality
-        document.addEventListener('click', async function(e) {
+        document.addEventListener('click', async function (e) {
             if (e.target.classList.contains('delete-image-btn')) {
                 if (confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
                     const imageId = e.target.dataset.id;
                     const formData = new FormData();
                     formData.append('id', imageId);
-                    
+
                     try {
                         const response = await fetch('delete_gallery_image.php', {
                             method: 'POST',
                             body: formData
                         });
                         const result = await response.json();
-                        
+
                         if (result.success) {
                             showStatus('success', result.message);
                             setTimeout(() => location.reload(), 1000);
@@ -207,4 +210,5 @@ $conn->close();
         });
     </script>
 </body>
+
 </html>

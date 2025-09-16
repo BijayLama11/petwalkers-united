@@ -5,7 +5,7 @@ $db_server = "localhost";
 $db_user   = "root";
 $db_pass   = "";
 $db_name   = "petwalkers_db";
-$db_port   = 3306;
+$db_port   = 8000;
 
 // Connect to MySQL server
 $conn = new mysqli($db_server, $db_user, $db_pass, "", $db_port);
@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL,
+  phone VARCHAR(20),
   subject VARCHAR(255) NOT NULL,
   message TEXT NOT NULL,
   viewed TINYINT(1) DEFAULT 0,

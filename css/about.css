@@ -1,4 +1,7 @@
 /* About Grid Layout */
+.container{
+  margin-inline: auto;
+}
 .about-grid {
     padding: 3rem 0;
   }

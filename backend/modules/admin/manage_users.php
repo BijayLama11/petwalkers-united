@@ -35,12 +35,14 @@ $conn->close();
     <header class="admin-header">
         <div class="container header-inner">
             <h1>Admin Dashboard</h1>
+            <p>Welcome, <?php echo htmlspecialchars($_SESSION['firstName']); ?>!</p>
         </div>
     </header>
     <main class="container admin-main">
         <aside class="sidebar">
             <nav>
                 <ul>
+                    <li><a href="/petwalkers-united/index.html">Home</a></li>
                     <li><a href="dashboard.php">Contact Submissions</a></li>
                     <li><a href="manage_services.php">Manage Services</a></li>
                     <li><a href="manage_users.php" class="active">Manage Users</a></li>
@@ -49,11 +51,12 @@ $conn->close();
                 </ul>
             </nav>
         </aside>
-        <section class="content">
+        <section class="content" style="display: flex;">
+            <div class="user-container">
             <h2>Manage Users</h2>
             <div id="status-message" class="status"></div>
 
-             <form id="add-user-form" class="admin-form" method="POST" action="#">
+            <form id="add-user-form" class="admin-form" method="POST" action="#">
                 <h3>Add New User</h3>
                 <div class="field">
                     <label for="firstName">First Name</label>
@@ -86,8 +89,9 @@ $conn->close();
                 </div>
                 <button type="submit" class="btn btn-primary">Add User</button>
             </form>
-
-            <h3>Registered Users</h3>
+            </div>
+            <div style="display: block;">
+            <h2>Registered Users</h2>
             <?php if (count($users) > 0): ?>
                 <table id="users-table">
                     <thead>
@@ -123,9 +127,10 @@ $conn->close();
             <?php else: ?>
                 <p>No users found.</p>
             <?php endif; ?>
+            </div>
         </section>
     </main>
-    
+
     <script src="../../../js/main.js"></script>
     <script src="../../../js/admin.js"></script>
 </body>
